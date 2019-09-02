@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">HUDvoca</string>
+
+    <string name="confirm">확인</string>
+    <string name="cancel">취소</string>
+    <string name="register">등록</string>
+
+    <string name="dialog_load_data">데이타를 불러오는중입니다.</string>
+    <string name="alert">알림</string>
+    <string name="network_error_msg">네트워크에 접속할 수 없습니다.\n네트워크 연결 상태를 확인해 주세요.</string>
+    <string name="retry">재시도</string>
+</resources>
