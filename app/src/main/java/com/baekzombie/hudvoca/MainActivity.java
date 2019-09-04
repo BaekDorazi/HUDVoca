@@ -29,8 +29,8 @@ public class MainActivity extends AppCompatActivity {
     int apiType = 0;
     ArrayList<VocaInfo> vocaInfos;
 
-    TextView tvVoca;
-    TextView tvMean;
+    TextView tvUp;
+    TextView tvDown;
 
     Timer timer = new Timer();
     TimerTask timerTask = null;
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         init();
 
 //        tvVoca.setScaleX(-1); //좌우 거울 형식으로 뒤집기
-        tvVoca.setScaleY(-1); //상하 거울 형식으로 뒤집기
-        tvMean.setScaleY(-1);
+        tvUp.setScaleY(-1); //상하 거울 형식으로 뒤집기
+        tvDown.setScaleY(-1);
         listener();
         getVoca();
     }
@@ -63,8 +63,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-        tvVoca = (TextView) findViewById(R.id.tv_voca);
-        tvMean = (TextView) findViewById(R.id.tv_mean);
+        tvUp = (TextView) findViewById(R.id.tv_up);
+        tvDown = (TextView) findViewById(R.id.tv_down);
     }
 
     private void listener() {
@@ -150,8 +150,8 @@ public class MainActivity extends AppCompatActivity {
                                         @Override
                                         public void run() {
                                             if (i < 20) {
-                                                tvVoca.setText(vocaInfos.get(i).getVocabulary());
-                                                tvMean.setText(vocaInfos.get(i).getMean());
+                                                tvDown.setText(vocaInfos.get(i).getVocabulary());
+                                                tvUp.setText(vocaInfos.get(i).getMean());
                                                 i++;
                                             }
 
