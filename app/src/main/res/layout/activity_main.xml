@@ -12,17 +12,19 @@
         android:orientation="vertical">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="영어"
-            android:textColor="#B3FF87"
-            android:textSize="60dp" />
-
-        <TextView
+            android:id="@+id/tv_mean"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="한국어"
             android:textColor="#B4F1E8"
             android:textSize="30dp" />
+
+        <TextView
+            android:id="@+id/tv_voca"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="영어"
+            android:textColor="#B3FF87"
+            android:textSize="60dp" />
     </LinearLayout>
 </LinearLayout>

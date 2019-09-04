@@ -7,5 +7,5 @@ public class Constants {
 
     public final static String API_SERVER = "http://hyemini.com/"; //api 서버
 
-    public final static String GET_VOCA = "getVoca/"; //영단어 가지고오는 api
+    public final static String GET_VOCA = API_SERVER + "hudvoca/"; //영단어 가지고오는 api
 }

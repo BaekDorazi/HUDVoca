@@ -36,7 +36,6 @@ public class ApiHandler {
         HttpConnectionParams.setSoTimeout(params, timeout);
         HttpConnectionParams.setTcpNoDelay(params, true);
 
-
         HttpGet httpGet = new HttpGet(url + param);
         int responseCode = 0;
         responseMessage = null;
@@ -59,82 +58,8 @@ public class ApiHandler {
         return responseCode;
     }
 
-    public int getMessage(String url, String param, String authKey) {
-        return getMessage(url, param, authKey, Constants.API_TIMEOUT);
-    }
-
-    public int getMessage(String url, String param, String authKey, int timeout) {
-        httpLogger(url, param);
-
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpParams params = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, timeout);
-        HttpConnectionParams.setSoTimeout(params, timeout);
-        HttpConnectionParams.setTcpNoDelay(params, true);
-
-        HttpGet httpGet = new HttpGet(url + param);
-        int responseCode = 0;
-        responseMessage = null;
-
-        try {
-            httpGet.setHeader("Accept", "application/json");
-            httpGet.addHeader("Content-Type", "application/json");
-            httpGet.addHeader("authKey", authKey);
-
-            HttpResponse httpresponse = httpclient.execute(httpGet);
-            responseCode = httpresponse.getStatusLine().getStatusCode();
-            responseMessage = EntityUtils.toString(httpresponse.getEntity());
-            responseLogger(responseCode, responseMessage);
-
-        } catch (ClientProtocolException e) {
-            Log.d("Debug", "ClientProtocolException === " + e.getMessage());
-        } catch (IOException e) {
-            Log.d("Debug", "IOException === " + e.getMessage());
-        }
-
-        return responseCode;
-    }
-
-    public int postMessage(String url, String json, String authKey) {
-        return postMessage(url, json, Constants.API_TIMEOUT, authKey);
-    }
-
-    public int postMessage(String url, String json, String authKey, String token, String sid) {
+    public int postMessage(String url, String json) {
         return postMessage(url, json, Constants.API_TIMEOUT);
-    }
-
-    public int postMessage(String url, String json, int timeout, String authKey) {
-        httpLogger(url, json);
-
-        HttpClient httpclient = new DefaultHttpClient();
-        HttpParams params = httpclient.getParams();
-        HttpConnectionParams.setConnectionTimeout(params, timeout);
-        HttpConnectionParams.setSoTimeout(params, timeout);
-
-        HttpPost httpPost = new HttpPost(url);
-        int responseCode = 0;
-        responseMessage = null;
-
-        try {
-            StringEntity entity = new StringEntity(json, HTTP.UTF_8);
-            entity.setContentType("application/json");
-            httpPost.setEntity(entity);
-            httpPost.addHeader("Accept", "application/json");
-            httpPost.addHeader("Content-Type", "application/json");
-            if (authKey != null)
-                httpPost.addHeader("authKey", authKey);
-
-            HttpResponse httpresponse = httpclient.execute(httpPost);
-            responseCode = httpresponse.getStatusLine().getStatusCode();
-            responseMessage = EntityUtils.toString(httpresponse.getEntity());
-            responseLogger(responseCode, responseMessage);
-        } catch (ClientProtocolException e) {
-            Log.d("Debug", "ClientProtocolException === " + e);
-        } catch (IOException e) {
-            Log.d("Debug", "IOException === " + e);
-        }
-
-        return responseCode;
     }
 
     public int postMessage(String url, String json, int timeout) {

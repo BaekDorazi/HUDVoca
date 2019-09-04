@@ -4,6 +4,8 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
 
 import com.baekzombie.hudvoca.api.ApiHandler;
 import com.baekzombie.hudvoca.common.Constants;
@@ -11,15 +13,29 @@ import com.baekzombie.hudvoca.record.VocaInfo;
 import com.baekzombie.hudvoca.utils.NetworkUtil;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity {
     ApiHandler apiHandler = new ApiHandler();
     ApiAsyncTask apiAsyncTask;
     int apiType = 0;
-    VocaInfo vocaInfo = new VocaInfo();
+    ArrayList<VocaInfo> vocaInfos;
+
+    TextView tvVoca;
+    TextView tvMean;
+
+    Timer timer = new Timer();
+    TimerTask timerTask = null;
+
+    int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         init();
+
+//        tvVoca.setScaleX(-1); //좌우 거울 형식으로 뒤집기
+        tvVoca.setScaleY(-1); //상하 거울 형식으로 뒤집기
+        tvMean.setScaleY(-1);
         listener();
         getVoca();
     }
@@ -43,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init() {
-
+        tvVoca = (TextView) findViewById(R.id.tv_voca);
+        tvMean = (TextView) findViewById(R.id.tv_mean);
     }
 
     private void listener() {
@@ -99,7 +120,8 @@ public class MainActivity extends AppCompatActivity {
             if (!isCancelled()) {
                 try {
                     if (apiType == 1) {
-                        result = apiHandler.getMessage(Constants.API_SERVER, Constants.GET_VOCA);
+                        String json = "?cate=trip";
+                        result = apiHandler.postMessage(Constants.GET_VOCA, json);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -118,7 +140,30 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             JSONObject dataJson = new JSONObject(json);
                             String data = dataJson.getString("data");
-                            vocaInfo = gson.fromJson(data, VocaInfo.class);
+                            vocaInfos = gson.fromJson(data, new TypeToken<List<VocaInfo>>() {
+                            }.getType());
+
+                            timerTask = new TimerTask() {
+                                @Override
+                                public void run() {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (i < 20) {
+                                                tvVoca.setText(vocaInfos.get(i).getVocabulary());
+                                                tvMean.setText(vocaInfos.get(i).getMean());
+                                                i++;
+                                            }
+
+                                            if (i == 20) {
+                                                i = 0;
+                                            }
+                                        }
+                                    });
+                                }
+                            };
+
+                            timer.schedule(timerTask, 0, 1000);
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {
