@@ -2,10 +2,15 @@ package com.baekzombie.hudvoca;
 
 import android.content.DialogInterface;
 import android.os.AsyncTask;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.baekzombie.hudvoca.api.ApiHandler;
 import com.baekzombie.hudvoca.common.Constants;
@@ -23,7 +28,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     ApiHandler apiHandler = new ApiHandler();
     ApiAsyncTask apiAsyncTask;
     int apiType = 0;
@@ -31,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
 
     TextView tvUp;
     TextView tvDown;
+
+    private FloatingActionButton fab_main, fab_sub1, fab_sub2;
+    private Animation fab_open, fab_close;
+    private boolean isFabOpen = false;
 
     Timer timer = new Timer();
     TimerTask timerTask = null;
@@ -65,10 +74,19 @@ public class MainActivity extends AppCompatActivity {
     private void init() {
         tvUp = (TextView) findViewById(R.id.tv_up);
         tvDown = (TextView) findViewById(R.id.tv_down);
+
+        fab_main = (FloatingActionButton) findViewById(R.id.fab_main);
+        fab_sub1 = (FloatingActionButton) findViewById(R.id.fab_sub1);
+        fab_sub2 = (FloatingActionButton) findViewById(R.id.fab_sub2);
+
+        fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
     }
 
     private void listener() {
-
+        fab_main.setOnClickListener(this);
+        fab_sub1.setOnClickListener(this);
+        fab_sub2.setOnClickListener(this);
     }
 
     private void getVoca() {
@@ -172,6 +190,41 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
+        }
+    }
+
+    private void toggleFab() {
+        if (isFabOpen) {
+            fab_main.setImageResource(R.mipmap.ic_launcher);
+            fab_sub1.startAnimation(fab_close);
+            fab_sub2.startAnimation(fab_close);
+            fab_sub1.setClickable(false);
+            fab_sub2.setClickable(false);
+            isFabOpen = false;
+        } else {
+            fab_main.setImageResource(R.mipmap.ic_launcher_round);
+            fab_sub1.startAnimation(fab_open);
+            fab_sub2.startAnimation(fab_open);
+            fab_sub1.setClickable(true);
+            fab_sub2.setClickable(true);
+            isFabOpen = true;
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_main:
+                toggleFab();
+                break;
+            case R.id.fab_sub1:
+                toggleFab();
+                Toast.makeText(this, "Camera Open-!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.fab_sub2:
+                toggleFab();
+                Toast.makeText(this, "Map Open-!", Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }
