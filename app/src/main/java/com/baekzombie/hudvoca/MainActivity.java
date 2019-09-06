@@ -195,14 +195,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void toggleFab() {
         if (isFabOpen) {
-            fab_main.setImageResource(R.mipmap.ic_launcher);
+            fab_main.setImageResource(R.drawable.plus_btn);
             fab_sub1.startAnimation(fab_close);
             fab_sub2.startAnimation(fab_close);
             fab_sub1.setClickable(false);
             fab_sub2.setClickable(false);
             isFabOpen = false;
         } else {
-            fab_main.setImageResource(R.mipmap.ic_launcher_round);
+            fab_main.setImageResource(R.drawable.close_btn);
             fab_sub1.startAnimation(fab_open);
             fab_sub2.startAnimation(fab_open);
             fab_sub1.setClickable(true);
