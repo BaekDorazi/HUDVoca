@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvUp;
     TextView tvDown;
 
-    private FloatingActionButton fab_main, fab_sub1, fab_sub2;
+    private FloatingActionButton fab_main, fab_word, fab_time, fab_flip;
     private Animation fab_open, fab_close;
     private boolean isFabOpen = false;
+    boolean isFlipMode = false; //플립기능 구분(false = 정방향, true = 거울)
 
     Timer timer = new Timer();
     TimerTask timerTask = null;
@@ -52,10 +53,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         init();
-
-//        tvVoca.setScaleX(-1); //좌우 거울 형식으로 뒤집기
-        tvUp.setScaleY(-1); //상하 거울 형식으로 뒤집기
-        tvDown.setScaleY(-1);
         listener();
         getVoca();
     }
@@ -76,8 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tvDown = (TextView) findViewById(R.id.tv_down);
 
         fab_main = (FloatingActionButton) findViewById(R.id.fab_main);
-        fab_sub1 = (FloatingActionButton) findViewById(R.id.fab_sub1);
-        fab_sub2 = (FloatingActionButton) findViewById(R.id.fab_sub2);
+        fab_word = (FloatingActionButton) findViewById(R.id.fab_word);
+        fab_time = (FloatingActionButton) findViewById(R.id.fab_time);
+        fab_flip = (FloatingActionButton) findViewById(R.id.fab_flip);
 
         fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
@@ -85,8 +83,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void listener() {
         fab_main.setOnClickListener(this);
-        fab_sub1.setOnClickListener(this);
-        fab_sub2.setOnClickListener(this);
+        fab_word.setOnClickListener(this);
+        fab_time.setOnClickListener(this);
+        fab_flip.setOnClickListener(this);
     }
 
     private void getVoca() {
@@ -168,8 +167,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                         @Override
                                         public void run() {
                                             if (i < 20) {
-                                                tvDown.setText(vocaInfos.get(i).getVocabulary());
-                                                tvUp.setText(vocaInfos.get(i).getMean());
+                                                if (isFlipMode) {
+                                                    tvDown.setText(vocaInfos.get(i).getVocabulary());
+                                                    tvUp.setText(vocaInfos.get(i).getMean());
+                                                } else {
+                                                    tvUp.setText(vocaInfos.get(i).getVocabulary());
+                                                    tvDown.setText(vocaInfos.get(i).getMean());
+                                                }
                                                 i++;
                                             }
 
@@ -196,17 +200,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void toggleFab() {
         if (isFabOpen) {
             fab_main.setImageResource(R.drawable.plus_btn);
-            fab_sub1.startAnimation(fab_close);
-            fab_sub2.startAnimation(fab_close);
-            fab_sub1.setClickable(false);
-            fab_sub2.setClickable(false);
+            fab_word.startAnimation(fab_close);
+            fab_time.startAnimation(fab_close);
+            fab_flip.startAnimation(fab_close);
+            fab_word.setClickable(false);
+            fab_time.setClickable(false);
+            fab_flip.setClickable(false);
             isFabOpen = false;
         } else {
             fab_main.setImageResource(R.drawable.close_btn);
-            fab_sub1.startAnimation(fab_open);
-            fab_sub2.startAnimation(fab_open);
-            fab_sub1.setClickable(true);
-            fab_sub2.setClickable(true);
+            fab_word.startAnimation(fab_open);
+            fab_time.startAnimation(fab_open);
+            fab_flip.startAnimation(fab_open);
+            fab_word.setClickable(true);
+            fab_time.setClickable(true);
+            fab_flip.setClickable(true);
             isFabOpen = true;
         }
     }
@@ -217,13 +225,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fab_main:
                 toggleFab();
                 break;
-            case R.id.fab_sub1:
+            case R.id.fab_word:
                 toggleFab();
                 Toast.makeText(this, "Camera Open-!", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.fab_sub2:
+            case R.id.fab_time:
                 toggleFab();
                 Toast.makeText(this, "Map Open-!", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.fab_flip:
+                if (isFlipMode) {
+                    fab_flip.setImageResource(R.drawable.phone_btn);
+                    tvUp.setScaleY(-1); //상하 거울 형식으로 뒤집기
+                    tvDown.setScaleY(-1);
+                    isFlipMode = false;
+                } else {
+                    fab_flip.setImageResource(R.drawable.car_btn);
+                    tvUp.setScaleY(1);
+                    tvDown.setScaleY(1);
+                    isFlipMode = true;
+                }
                 break;
         }
     }
