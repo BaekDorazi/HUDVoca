@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void init() {
         tvUp = (TextView) findViewById(R.id.tv_up);
         tvDown = (TextView) findViewById(R.id.tv_down);
+        tvUp.setSelected(true);
+        tvDown.setSelected(true);
 
         fab_main = (FloatingActionButton) findViewById(R.id.fab_main);
         fab_word = (FloatingActionButton) findViewById(R.id.fab_word);
@@ -185,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                                 }
                             };
 
-                            timer.schedule(timerTask, 0, 1000);
+                            timer.schedule(timerTask, 0, 10000);
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {
@@ -235,14 +237,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab_flip:
                 if (isFlipMode) {
-                    fab_flip.setImageResource(R.drawable.phone_btn);
-                    tvUp.setScaleY(-1); //상하 거울 형식으로 뒤집기
-                    tvDown.setScaleY(-1);
-                    isFlipMode = false;
-                } else {
                     fab_flip.setImageResource(R.drawable.car_btn);
                     tvUp.setScaleY(1);
                     tvDown.setScaleY(1);
+                    isFlipMode = false;
+                } else {
+                    fab_flip.setImageResource(R.drawable.phone_btn);
+                    tvUp.setScaleY(-1); //상하 거울 형식으로 뒤집기
+                    tvDown.setScaleY(-1);
                     isFlipMode = true;
                 }
                 break;
