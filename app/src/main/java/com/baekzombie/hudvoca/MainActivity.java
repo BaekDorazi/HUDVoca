@@ -1,16 +1,15 @@
 package com.baekzombie.hudvoca;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.baekzombie.hudvoca.api.ApiHandler;
 import com.baekzombie.hudvoca.common.Constants;
@@ -290,6 +289,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab_word:
                 toggleFab();
+                Intent intent = new Intent(this, WordActivity.class);
+                intent.putExtra("vocaInfos", vocaInfos);
+                startActivity(intent);
                 break;
             case R.id.fab_time:
                 toggleTimeFab();

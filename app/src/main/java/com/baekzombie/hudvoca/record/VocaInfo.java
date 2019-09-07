@@ -1,6 +1,8 @@
 package com.baekzombie.hudvoca.record;
 
-public class VocaInfo {
+import java.io.Serializable;
+
+public class VocaInfo implements Serializable {
     private int id;
     private String vocabulary; //영단어
     private String mean; //뜻
