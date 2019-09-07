@@ -3,4 +3,10 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="colorTextUp">#F5D1B7</color>
+    <color name="colorTextDown">#F4C96B</color>
+    <color name="colorFabMain">#E98138</color>
+    <color name="colorFabSub">#8885A4</color>
+    <color name="colorFabTimeSub">#7A9A82</color>
 </resources>
