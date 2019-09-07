@@ -9,4 +9,11 @@
     <string name="alert">알림</string>
     <string name="network_error_msg">네트워크에 접속할 수 없습니다.\n네트워크 연결 상태를 확인해 주세요.</string>
     <string name="retry">재시도</string>
+
+    <string name="str_10_sec">10초</string>
+    <string name="str_30_sec">10초</string>
+    <string name="str_1_min">1분</string>
+    <string name="str_5_min">5분</string>
+    <string name="str_normal_mode">일반모드</string>
+    <string name="str_car_mode">차량</string>
 </resources>

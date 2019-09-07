@@ -34,8 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     int apiType = 0;
     ArrayList<VocaInfo> vocaInfos;
 
-    TextView tvUp;
-    TextView tvDown;
+    TextView tvSettingStatus, tvUp, tvDown;
 
     private FloatingActionButton fab_main, fab_word, fab_time, fab_flip, fab_10_sec, fab_30_sec, fab_1_min, fab_5_min;
     private Animation fab_open, fab_close, fab_sub_open, fab_sub_close;
@@ -48,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     int i = 0;
     long period = 30 * 1000;
+    String strPeriod = "30초";
+    String strFlipMode = "일반모드";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void init() {
+        tvSettingStatus = (TextView) findViewById(R.id.tv_setting_status);
         tvUp = (TextView) findViewById(R.id.tv_up);
         tvDown = (TextView) findViewById(R.id.tv_down);
         tvUp.setSelected(true);
@@ -258,6 +260,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        tvSettingStatus.setText(strPeriod + " / " + strFlipMode);
                         if (i < 20) {
                             if (isFlipMode) {
                                 tvDown.setText(vocaInfos.get(i).getVocabulary());
@@ -287,7 +290,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.fab_word:
                 toggleFab();
-                Toast.makeText(this, "Camera Open-!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fab_time:
                 toggleTimeFab();
@@ -295,30 +297,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.fab_flip:
                 if (isFlipMode) {
                     fab_flip.setImageResource(R.drawable.car_btn);
+                    strFlipMode = getString(R.string.str_normal_mode);
                     tvUp.setScaleY(1);
                     tvDown.setScaleY(1);
                     isFlipMode = false;
                 } else {
                     fab_flip.setImageResource(R.drawable.phone_btn);
+                    strFlipMode = getString(R.string.str_car_mode);
                     tvUp.setScaleY(-1); //상하 거울 형식으로 뒤집기
                     tvDown.setScaleY(-1);
                     isFlipMode = true;
                 }
+                tvSettingStatus.setText(strPeriod + " / " + strFlipMode);
                 break;
             case R.id.fab_10_sec:
                 period = 10 * 1000;
+                strPeriod = getString(R.string.str_10_sec);
                 setTimerTask();
                 break;
             case R.id.fab_30_sec:
                 period = 30 * 1000;
+                strPeriod = getString(R.string.str_30_sec);
                 setTimerTask();
                 break;
             case R.id.fab_1_min:
                 period = 60 * 1000;
+                strPeriod = getString(R.string.str_1_min);
                 setTimerTask();
                 break;
             case R.id.fab_5_min:
                 period = 300 * 1000;
+                strPeriod = getString(R.string.str_5_min);
                 setTimerTask();
                 break;
         }
