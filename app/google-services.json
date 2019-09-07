@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "642342911518",
+    "firebase_url": "https://hudvoca.firebaseio.com",
+    "project_id": "hudvoca",
+    "storage_bucket": "hudvoca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:642342911518:android:a82efb38878445b575b80f",
+        "android_client_info": {
+          "package_name": "com.baekzombie.hudvoca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "642342911518-v0dig6vtsnj8rfdtucvvb6q6ubejd04f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCccniorAX2mpG1p5X6t9n9OlJYEAjE5fc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "642342911518-v0dig6vtsnj8rfdtucvvb6q6ubejd04f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

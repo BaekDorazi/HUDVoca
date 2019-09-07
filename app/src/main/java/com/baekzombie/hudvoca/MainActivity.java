@@ -15,6 +15,11 @@ import com.baekzombie.hudvoca.api.ApiHandler;
 import com.baekzombie.hudvoca.common.Constants;
 import com.baekzombie.hudvoca.record.VocaInfo;
 import com.baekzombie.hudvoca.utils.NetworkUtil;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -37,6 +42,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private FloatingActionButton fab_main, fab_word, fab_time, fab_flip, fab_10_sec, fab_30_sec, fab_1_min, fab_5_min;
     private Animation fab_open, fab_close, fab_sub_open, fab_sub_close;
+
+    AdView mAdView;
+
     private boolean isFabOpen = false;
     private boolean isTimeFabOpen = false;
     boolean isFlipMode = false; //플립기능 구분(false = 정방향, true = 거울)
@@ -49,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String strPeriod = "30초";
     String strFlipMode = "일반모드";
 
+    AdRequest adRequest = new AdRequest.Builder().build();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         init();
         listener();
         getVoca();
+
+        mAdView.loadAd(adRequest);
     }
 
     @Override
@@ -92,6 +104,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
         fab_sub_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fab_sub_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+
+        mAdView = findViewById(R.id.ad_view);
     }
 
     private void listener() {
