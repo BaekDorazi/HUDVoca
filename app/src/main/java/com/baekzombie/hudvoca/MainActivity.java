@@ -37,15 +37,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView tvUp;
     TextView tvDown;
 
-    private FloatingActionButton fab_main, fab_word, fab_time, fab_flip;
-    private Animation fab_open, fab_close;
+    private FloatingActionButton fab_main, fab_word, fab_time, fab_flip, fab_10_sec, fab_30_sec, fab_1_min, fab_5_min;
+    private Animation fab_open, fab_close, fab_sub_open, fab_sub_close;
     private boolean isFabOpen = false;
+    private boolean isTimeFabOpen = false;
     boolean isFlipMode = false; //플립기능 구분(false = 정방향, true = 거울)
 
     Timer timer = new Timer();
     TimerTask timerTask = null;
 
     int i = 0;
+    long period = 30 * 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             if (apiAsyncTask != null)
                 apiAsyncTask.cancel(true);
+            if (timerTask != null)
+                timerTask.cancel();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -78,9 +82,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab_word = (FloatingActionButton) findViewById(R.id.fab_word);
         fab_time = (FloatingActionButton) findViewById(R.id.fab_time);
         fab_flip = (FloatingActionButton) findViewById(R.id.fab_flip);
+        fab_10_sec = (FloatingActionButton) findViewById(R.id.fab_10_sec);
+        fab_30_sec = (FloatingActionButton) findViewById(R.id.fab_30_sec);
+        fab_1_min = (FloatingActionButton) findViewById(R.id.fab_1_min);
+        fab_5_min = (FloatingActionButton) findViewById(R.id.fab_5_min);
 
         fab_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
         fab_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
+        fab_sub_open = AnimationUtils.loadAnimation(this, R.anim.fab_open);
+        fab_sub_close = AnimationUtils.loadAnimation(this, R.anim.fab_close);
     }
 
     private void listener() {
@@ -88,6 +98,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fab_word.setOnClickListener(this);
         fab_time.setOnClickListener(this);
         fab_flip.setOnClickListener(this);
+        fab_10_sec.setOnClickListener(this);
+        fab_30_sec.setOnClickListener(this);
+        fab_1_min.setOnClickListener(this);
+        fab_5_min.setOnClickListener(this);
     }
 
     private void getVoca() {
@@ -162,32 +176,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             vocaInfos = gson.fromJson(data, new TypeToken<List<VocaInfo>>() {
                             }.getType());
 
-                            timerTask = new TimerTask() {
-                                @Override
-                                public void run() {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (i < 20) {
-                                                if (isFlipMode) {
-                                                    tvDown.setText(vocaInfos.get(i).getVocabulary());
-                                                    tvUp.setText(vocaInfos.get(i).getMean());
-                                                } else {
-                                                    tvUp.setText(vocaInfos.get(i).getVocabulary());
-                                                    tvDown.setText(vocaInfos.get(i).getMean());
-                                                }
-                                                i++;
-                                            }
-
-                                            if (i == 20) {
-                                                i = 0;
-                                            }
-                                        }
-                                    });
-                                }
-                            };
-
-                            timer.schedule(timerTask, 0, 10000);
+                            setTimerTask();
                         } catch (JsonSyntaxException e) {
                             e.printStackTrace();
                         } catch (JSONException e) {
@@ -199,6 +188,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    /**
+     * 메뉴 on/off
+     */
     private void toggleFab() {
         if (isFabOpen) {
             fab_main.setImageResource(R.drawable.plus_btn);
@@ -209,6 +201,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab_time.setClickable(false);
             fab_flip.setClickable(false);
             isFabOpen = false;
+
+            if (isTimeFabOpen) {
+                isTimeFabOpen = true;
+                toggleTimeFab();
+            }
         } else {
             fab_main.setImageResource(R.drawable.close_btn);
             fab_word.startAnimation(fab_open);
@@ -219,6 +216,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             fab_flip.setClickable(true);
             isFabOpen = true;
         }
+    }
+
+    /**
+     * 시간 선택하는 메뉴 on/off
+     */
+    private void toggleTimeFab() {
+        if (isTimeFabOpen) {
+            fab_10_sec.startAnimation(fab_sub_close);
+            fab_30_sec.startAnimation(fab_sub_close);
+            fab_1_min.startAnimation(fab_sub_close);
+            fab_5_min.startAnimation(fab_sub_close);
+            fab_10_sec.setClickable(false);
+            fab_30_sec.setClickable(false);
+            fab_1_min.setClickable(false);
+            fab_5_min.setClickable(false);
+            isTimeFabOpen = false;
+        } else {
+            fab_10_sec.startAnimation(fab_sub_open);
+            fab_30_sec.startAnimation(fab_sub_open);
+            fab_1_min.startAnimation(fab_sub_open);
+            fab_5_min.startAnimation(fab_sub_open);
+            fab_10_sec.setClickable(true);
+            fab_30_sec.setClickable(true);
+            fab_1_min.setClickable(true);
+            fab_5_min.setClickable(true);
+            isTimeFabOpen = true;
+        }
+    }
+
+    /**
+     * 타이머 돌리는 메소드
+     */
+    private void setTimerTask() {
+        if (timerTask != null)
+            timerTask.cancel();
+
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (i < 20) {
+                            if (isFlipMode) {
+                                tvDown.setText(vocaInfos.get(i).getVocabulary());
+                                tvUp.setText(vocaInfos.get(i).getMean());
+                            } else {
+                                tvUp.setText(vocaInfos.get(i).getVocabulary());
+                                tvDown.setText(vocaInfos.get(i).getMean());
+                            }
+                            i++;
+                        }
+
+                        if (i == 20) {
+                            i = 0;
+                        }
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask, 0, period);
     }
 
     @Override
@@ -232,8 +290,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(this, "Camera Open-!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.fab_time:
-                toggleFab();
-                Toast.makeText(this, "Map Open-!", Toast.LENGTH_SHORT).show();
+                toggleTimeFab();
                 break;
             case R.id.fab_flip:
                 if (isFlipMode) {
@@ -247,6 +304,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     tvDown.setScaleY(-1);
                     isFlipMode = true;
                 }
+                break;
+            case R.id.fab_10_sec:
+                period = 10 * 1000;
+                setTimerTask();
+                break;
+            case R.id.fab_30_sec:
+                period = 30 * 1000;
+                setTimerTask();
+                break;
+            case R.id.fab_1_min:
+                period = 60 * 1000;
+                setTimerTask();
+                break;
+            case R.id.fab_5_min:
+                period = 300 * 1000;
+                setTimerTask();
                 break;
         }
     }
