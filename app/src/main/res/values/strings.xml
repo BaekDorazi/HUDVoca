@@ -11,7 +11,7 @@
     <string name="retry">재시도</string>
 
     <string name="str_10_sec">10초</string>
-    <string name="str_30_sec">10초</string>
+    <string name="str_30_sec">30초</string>
     <string name="str_1_min">1분</string>
     <string name="str_5_min">5분</string>
     <string name="str_normal_mode">일반모드</string>
