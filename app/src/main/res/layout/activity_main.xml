@@ -95,7 +95,7 @@
         android:layout_marginRight="70dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/colorFabTimeSub"
-        android:src="@drawable/time_btn"
+        android:src="@drawable/sec_10_btn"
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="mini" />
@@ -109,7 +109,7 @@
         android:layout_marginRight="120dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/colorFabTimeSub"
-        android:src="@drawable/time_btn"
+        android:src="@drawable/sec_30_btn"
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="mini" />
@@ -123,7 +123,7 @@
         android:layout_marginRight="170dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/colorFabTimeSub"
-        android:src="@drawable/time_btn"
+        android:src="@drawable/min_1_btn"
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="mini" />
@@ -137,7 +137,7 @@
         android:layout_marginRight="220dp"
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/colorFabTimeSub"
-        android:src="@drawable/time_btn"
+        android:src="@drawable/min_5_btn"
         android:visibility="invisible"
         app:borderWidth="0dp"
         app:fabSize="mini" />
